@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vudio Demo</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <img id="bg"/>
+        <canvas id="canvas"></canvas>
+        <audio id="audio" src="./demo_src/nuanchun.mp3" preload="auto"></audio>
+        <label class="label" for="audioFile" id="audioLabel">Drop audio file here to play</label>
+        <input type="file" name="audioFile" id="audioFile" onchange="vudio.readAudioSrc(this,vudio,document.querySelector('#audioLabel'))" accept="audio/*">
+    </div>
+    <div class="controller">
+        <div>
+            <button onclick="(function(){ audio.play();vudio.dance(); })()">播放音乐</button>
+            <button onclick="audio.pause()">暂停音乐</button>
+        </div>
+        <div>
+            <button onclick="vudio.dance()">播放效果</button>
+            <button onclick="vudio.pause()">暂停效果</button>
+            <button onclick="prettifyWaveform()">美化效果</button>
+        </div>
+        <div >
+            <button class="type type-1" onclick="changeType(0)">柱状</button>
+            <button class="type type-2" onclick="changeType(1)">圆形柱状</button>
+            <button class="type type-3" onclick="changeType(2)">波浪~</button>
+            <button class="type type-4" onclick="changeType(3)">圆形波浪</button>
+        </div>
+        <div id="colors-select">
+        </div>
+        <div>
+            <button class="pos-v" onclick="changePosV('top')">上</button>
+            <button class="pos-v" onclick="changePosV('middle')">中</button>
+            <button class="pos-v" onclick="changePosV('bottom')">下</button>
+        </div>
+        <div>
+            <button class="pos-h" onclick="changePosH('left')">左</button>
+            <button class="pos-h" onclick="changePosH('center')">中</button>
+            <button class="pos-h" onclick="changePosH('right')">右</button>
+        </div>
+    </div>
+    <script src="./src/tools.js"></script>
+    <script src="./src/particle.js"></script>
+    <script src="./vudio.js"></script>
+    <script src="./src/main.js"></script>
+    <script src="./src/colorsSelect.js"></script>
+
+</body>
+</html>
