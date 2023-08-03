@@ -272,3 +272,60 @@ body {
   color: #c5ffc7;
   font-size: 28px;
 } /*# sourceMappingURL=style.css.map */
+
+/* 歌词边框旋转特效 */
+
+.music-player-wrapper {
+  width: 500px;
+  height: 600px;
+  background: #1c1c1c;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.music-player-wrapper .music-player {
+  position: absolute;
+  inset: 2px;
+  background: #28292d;
+  padding: 50px 40px;
+  border-radius: 8px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.music-player-wrapper::before {
+  content: "";
+  z-index: 1;
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 500px;
+  height: 600px;
+  transform-origin: bottom right;
+  background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+  animation: animate 6s linear infinite;
+}
+
+.music-player-wrapper::after {
+  content: "";
+  z-index: 1;
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 500px;
+  height: 600px;
+  transform-origin: bottom right;
+  background: linear-gradient(0deg, transparent, #45f3ff, #45f3ff);
+  animation: animate 6s linear infinite;
+  animation-delay: -3s;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
