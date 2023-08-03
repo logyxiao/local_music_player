@@ -1,12 +1,12 @@
 
 //  默认颜色 
 const defaultColor = [
-  [1, '#fff'],
-        [1, '#fff'],
-        [1, '#fff'],
-        [1, '#fff'],
-        [1, '#fff'],
-    ]
+    [1, '#fff'],
+    [1, '#fff'],
+    [1, '#fff'],
+    [1, '#fff'],
+    [1, '#fff'],
+]
 
 var colors = [
     defaultColor,
@@ -37,9 +37,9 @@ var colors = [
 
 
 // 1. 柱状 2.圆形柱状 3. 波浪 4. 圆形波浪
-const  types = ['waveform', 'circlebar', 'lighting', 'circlewave'];
+const types = ['waveform', 'circlebar', 'lighting', 'circlewave'];
 // 默认特效
-const defaultEffect = 'waveform'
+const defaultEffect = 'circlebar'
 
 var prettify = false;
 var canvas = $('#canvas');
@@ -56,7 +56,8 @@ var vudio = new Vudio(audio, canvas, {
         shadowBlur: 4,
         shadowColor: 'rgba(244,244,244,.5)',
         coverImg: './demo_src/o_1.png',
-        color: colors[0]
+        color: colors[0],
+        verticalAlign: 'bottom'
 
     },
     circlewave: {
@@ -65,7 +66,8 @@ var vudio = new Vudio(audio, canvas, {
         shadowBlur: 4,
         shadowColor: 'rgba(244,244,244,.5)',
         coverImg: './demo_src/o_2.png',
-        color: colors[0]
+        color: colors[0],
+        verticalAlign: 'bottom'
     },
     waveform: {
         maxHeight: 160,
@@ -74,8 +76,21 @@ var vudio = new Vudio(audio, canvas, {
         shadowColor: 'rgba(255,21,10,0.6)',
         prettify: true,
         fadeSide: true,
-        color: colors[0]
-    }
+        color: colors[0],
+        verticalAlign: 'bottom'
+
+    },
+    lighting: {
+        maxHeight: 160,
+        spacing: 1,
+        shadowBlur: 6,
+        shadowColor: 'rgba(255,21,10,0.6)',
+        prettify: true,
+        fadeSide: true,
+        color: colors[0],
+        verticalAlign: 'bottom'
+
+    },
 });
 
 
@@ -84,6 +99,24 @@ function $(selector) {
     return document.querySelector(selector);
 }
 function changeType(index) {
+    if ([1, 3].includes(index)) {
+        canvas.style.position = "absolute";
+        canvas.style.top = "50%";
+        canvas.style.left = "50%";
+        canvas.style.marginLeft = "300px";
+        canvas.style.marginTop = "-300px";
+        canvas.style.width = "600px";
+        canvas.style.height = "600px";
+
+    } else {
+
+        canvas.style.top = '45%';
+        canvas.style.left = '5%';
+        canvas.style.width = '90%';
+        canvas.style.height = '600px';
+        canvas.style.marginLeft = "0";
+        canvas.style.marginTop = "0";
+    }
     vudio.setOption({
         effect: types[index]
     });
