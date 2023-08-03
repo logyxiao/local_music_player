@@ -3,21 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Vudio Demo</title>
+    <link rel="stylesheet" href="./player.css">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./asset/iconfont/iconfont.css">
 </head>
 <body>
     <div class="container">
         <img id="bg"/>
         <canvas id="canvas"></canvas>
-        <audio id="audio" src="./demo_src/nuanchun.mp3" preload="auto"></audio>
-        <label class="label" for="audioFile" id="audioLabel">Drop audio file here to play</label>
+        <canvas id="canvas2"></canvas>
+        <audio id="audio" src="./asset/music/1.mp3"  preload="auto"></audio>
         <input type="file" name="audioFile" id="audioFile" onchange="vudio.readAudioSrc(this,vudio,document.querySelector('#audioLabel'))" accept="audio/*">
     </div>
-    <div class="controller">
-        <div>
-            <button onclick="(function(){ audio.play();vudio.dance(); })()">播放音乐</button>
-            <button onclick="audio.pause()">暂停音乐</button>
+    <div class="music-player-wrapper">
+        <div class="music-player">
+            <audio src="./asset/music/1.mp3" id="audio2"></audio> 
+            <div class="top-bar">
+                <span class="iconfont icon-24gl-volumeMiddle"></span>
+                <div class="progress-bar sound-progress-bar">
+                    <span class="duration-bar sound-duration"></span>
+                    <span class="progress sound-progress">
+                        <span class="round"></span>
+                    </span>
+                </div>
+                <span class="iconfont icon-geciweidianji"></span>
+            </div>
+            <div class="music-info">
+                <div class="info-left">
+                    <!-- <img class="music-img" src="./asset/music/music-1.jpg" alt=""> -->
+                    <div class="lyric-mask">
+                        <div class="lyric-wrapper">
+                            <ul id="lyc-content"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-right">
+                    <div class="music-name">
+                        <span class="name">Letting go</span>
+                        <span class="musician">汪苏泷/金若晨</span>
+                    </div>
+                    <div class="playback-setting">
+                        <span class="iconfont icon-next previous"></span>
+                        <span class="iconfont icon-bofang"></span>
+                        <span class="iconfont icon-zanting1"></span>
+                        <span class="iconfont icon-next next"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar player-progress-bar">
+                <span class="duration-bar play-duration"></span>
+                <span class="progress player-progress"></span>
+                <span class="time">03:22</span>
+            </div>
         </div>
+    </div>
+    <div class="controller">
         <div>
             <button onclick="vudio.dance()">播放效果</button>
             <button onclick="vudio.pause()">暂停效果</button>
@@ -42,11 +82,13 @@
             <button class="pos-h" onclick="changePosH('right')">右</button>
         </div>
     </div>
+
     <script src="./src/tools.js"></script>
     <script src="./src/particle.js"></script>
     <script src="./vudio.js"></script>
     <script src="./src/main.js"></script>
     <script src="./src/colorsSelect.js"></script>
+    <script src="./lyc.js"></script>
 
 </body>
 </html>
