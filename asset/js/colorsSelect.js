@@ -6,14 +6,14 @@ const getLinearGradient = (gradientArray) => {
         gradientString = gradientArray.map(([percentage, color]) => `${color} ${percentage * 100}%`).join(', ');
 
     } else {
-        gradientString = gradientArray.map((color) => `${color}`)
+        gradientString = gradientArray
 
     }
 
     return `linear-gradient(${gradientString})`;
 }
 
-function renderButtons() {
+function renderButtons(colors) {
 
     var container = document.getElementById("colors-select");
 
@@ -42,4 +42,4 @@ function changeColor(index) {
         }
     });
 }
-renderButtons();
+renderButtons(canvas1Colors);

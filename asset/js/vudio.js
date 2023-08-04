@@ -145,9 +145,13 @@
 
             source.connect(this.analyser);
             this.analyser.fftSize = this.option.accuracy * 2;
+            console.log(this.option.effect)
             this.analyser.connect(audioContext.destination);
 
+
             this.freqByteData = new Uint8Array(this.analyser.frequencyBinCount);
+            this.analyser.getByteFrequencyData(this.freqByteData);
+
             this.context2d = this.canvasEle.getContext('2d');
             this.width = this.option.width;
             this.height = this.option.height;
@@ -189,6 +193,7 @@
             this.analyser.fftSize = this.option.accuracy * 2;
             this.analyser.connect(audioContext.destination);
         },
+
 
         __rebuildData: function (freqByteData, horizontalAlign) {
 
@@ -261,6 +266,7 @@
                     var __prettify = __lightingOption.prettify;
                     var __color = __lightingOption.color;
                     var __isStart = true, __fadeSide = true, __x, __y, __linearGradient;
+
 
                     if (__lightingOption.horizontalAlign !== 'center') {
                         __fadeSide = false;
@@ -379,7 +385,7 @@
                             vx: .3 * Math.sin(deg) + Math.random() * .5 - .3,
                             vy: .3 * Math.cos(deg) + Math.random() * .5 - .3,
                             life: Math.random() * 10,
-                            // color: __circlewaveOption.color
+                            color: __circlewaveOption.particleColor
                         }));
                         // should clean dead particle before render.
                         if (__that.particles.length > __maxParticle) {
@@ -510,7 +516,7 @@
                             vx: .3 * Math.sin(deg) + Math.random() * .5 - .3,
                             vy: .3 * Math.cos(deg) + Math.random() * .5 - .3,
                             life: Math.random() * 10,
-                            // color: __circlebarOption.color
+                            color: __circlebarOption.particleColor
                         }));
                         // should clean dead particle before render.
                         if (__that.particles.length > __maxParticle) {
@@ -696,8 +702,209 @@
 
                     });
 
-                }
+                },
+                wavy: function (array) {
+                    __that.context2d.clearRect(0, 0, __that.width, __that.height);
 
+                    this.baseY = __that.height - 10
+
+                    let waveArr1 = [], waveArr2 = [], waveTemp = [], leftTemp = [], rightTemp = [], waveStep = 50, leftStep = 70, rightStep = 90;
+                    array.map((data, k) => {
+                        if (waveStep == 50 && waveTemp.length < 9) {
+                            waveTemp.push(data / 2.6);
+                            waveStep = 0;
+                        } else {
+                            waveStep++;
+                        }
+                        if (leftStep == 0 && leftTemp.length < 5) {
+                            leftTemp.unshift(Math.floor(data / 4.8));
+                            leftStep = 70;
+                        } else {
+                            leftStep--;
+                        }
+                        if (rightStep == 0 && rightTemp.length < 5) {
+                            rightTemp.push(Math.floor(data / 4.8));
+                            rightStep = 90;
+                        } else {
+                            rightStep--;
+                        }
+                    });
+
+                    waveArr1 = leftTemp.concat(waveTemp).concat(rightTemp);
+                    waveArr2 = leftTemp.concat(rightTemp);
+                    waveArr2.map((data, k) => {
+                        waveArr2[k] = data * 1.8;
+                    });
+                    let waveWidth = Math.ceil(__that.width / (waveArr1.length - 3));
+                    let waveWidth2 = Math.ceil(__that.width / (waveArr2.length - 3));
+                    var __wavyOption = __that.option.wavy;
+                    var __color = __wavyOption.color;
+                    let color1 = 'rgba(255, 255, 255, 0.2)';
+                    let color2 = 'rgba(255, 255, 255, 0.4)';
+
+                    if (__color instanceof Array) {
+                        color1 = __color[0]
+                        color2 = __color[1]
+                    } else {
+                        color1 = __color
+                        color2 = __color
+                    }
+
+                    __that.context2d.beginPath();
+                    __that.context2d.fillStyle = color1
+                    __that.context2d.moveTo(-waveWidth * 2, this.baseY - waveArr1[0]);
+                    for (let i = 1; i < waveArr1.length - 2; i++) {
+                        let p0 = { x: (i - 2) * waveWidth, y: waveArr1[i - 1] };
+                        let p1 = { x: (i - 1) * waveWidth, y: waveArr1[i] };
+                        let p2 = { x: (i) * waveWidth, y: waveArr1[i + 1] };
+                        let p3 = { x: (i + 1) * waveWidth, y: waveArr1[i + 2] };
+
+                        for (let j = 0; j < 100; j++) {
+                            let t = j * (1.0 / 100);
+                            let tt = t * t;
+                            let ttt = tt * t;
+                            let CGPoint = {};
+                            CGPoint.x = 0.5 * (2 * p1.x + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * tt + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * ttt);
+                            CGPoint.y = 0.5 * (2 * p1.y + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * tt + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * ttt);
+                            __that.context2d.lineTo(CGPoint.x, this.baseY - CGPoint.y);
+                        }
+                        __that.context2d.lineTo(p2.x, this.baseY - p2.y);
+                    }
+                    __that.context2d.lineTo((waveArr1.length) * waveWidth, this.baseY - waveArr1[waveArr1.length - 1]);
+                    __that.context2d.lineTo(__that.width + waveWidth * 2, this.baseY);
+                    __that.context2d.lineTo(__that.width + waveWidth * 2, __that.height);
+                    __that.context2d.lineTo(-2 * waveWidth, __that.height);
+                    __that.context2d.fill();
+
+
+                    __that.context2d.beginPath();
+                    __that.context2d.fillStyle = color2
+
+                    __that.context2d.moveTo(-waveWidth2 * 2, this.baseY - waveArr1[0]);
+                    for (let i = 1; i < waveArr1.length - 2; i++) {
+                        let p0 = { x: (i - 2) * waveWidth2, y: waveArr1[i - 1] };
+                        let p1 = { x: (i - 1) * waveWidth2, y: waveArr1[i] };
+                        let p2 = { x: (i) * waveWidth2, y: waveArr1[i + 1] };
+                        let p3 = { x: (i + 1) * waveWidth2, y: waveArr1[i + 2] };
+
+                        for (let j = 0; j < 100; j++) {
+                            let t = j * (1.0 / 100);
+                            let tt = t * t;
+                            let ttt = tt * t;
+                            let CGPoint = {};
+                            CGPoint.x = 0.5 * (2 * p1.x + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * tt + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * ttt);
+                            CGPoint.y = 0.5 * (2 * p1.y + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * tt + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * ttt);
+                            __that.context2d.lineTo(CGPoint.x, this.baseY - CGPoint.y);
+                        }
+                        __that.context2d.lineTo(p2.x, this.baseY - p2.y);
+                    }
+                    __that.context2d.lineTo((waveArr1.length) * waveWidth2, this.baseY - waveArr1[waveArr1.length - 1]);
+                    __that.context2d.lineTo(__that.width + waveWidth2 * 2, this.baseY);
+                    __that.context2d.lineTo(__that.width + waveWidth2 * 2, __that.height);
+                    __that.context2d.lineTo(-2 * waveWidth2, __that.height);
+                    __that.context2d.fill();
+                },
+                bar: function (array) {
+                    __that.context2d.clearRect(0, 0, __that.width, __that.height);
+
+                    this.baseY = __that.height - 10
+
+                    let waveArr1 = [], waveArr2 = [], waveTemp = [], leftTemp = [], rightTemp = [], waveStep = 50, leftStep = 70, rightStep = 90;
+                    array.map((data, k) => {
+                        if (waveStep == 50 && waveTemp.length < 9) {
+                            waveTemp.push(data / 2.6);
+                            waveStep = 0;
+                        } else {
+                            waveStep++;
+                        }
+                        if (leftStep == 0 && leftTemp.length < 5) {
+                            leftTemp.unshift(Math.floor(data / 4.8));
+                            leftStep = 70;
+                        } else {
+                            leftStep--;
+                        }
+                        if (rightStep == 0 && rightTemp.length < 5) {
+                            rightTemp.push(Math.floor(data / 4.8));
+                            rightStep = 90;
+                        } else {
+                            rightStep--;
+                        }
+                    });
+
+                    waveArr1 = leftTemp.concat(waveTemp).concat(rightTemp);
+                    waveArr2 = leftTemp.concat(rightTemp);
+                    waveArr2.map((data, k) => {
+                        waveArr2[k] = data * 1.8;
+                    });
+                    let waveWidth = Math.ceil(__that.width / (waveArr1.length - 3));
+                    let waveWidth2 = Math.ceil(__that.width / (waveArr2.length - 3));
+                    var __wavyOption = __that.option.wavy;
+                    var __color = __wavyOption.color;
+                    let color1 = 'rgba(255, 255, 255, 0.2)';
+                    let color2 = 'rgba(255, 255, 255, 0.4)';
+
+                    if (__color instanceof Array) {
+                        color1 = __color[0]
+                        color2 = __color[1]
+                    } else {
+                        color1 = __color
+                        color2 = __color
+                    }
+
+                    __that.context2d.beginPath();
+                    __that.context2d.fillStyle = color1
+                    __that.context2d.moveTo(-waveWidth * 2, this.baseY - waveArr1[0]);
+                    for (let i = 1; i < waveArr1.length - 2; i++) {
+                        let p0 = { x: (i - 2) * waveWidth, y: waveArr1[i - 1] };
+                        let p1 = { x: (i - 1) * waveWidth, y: waveArr1[i] };
+                        let p2 = { x: (i) * waveWidth, y: waveArr1[i + 1] };
+                        let p3 = { x: (i + 1) * waveWidth, y: waveArr1[i + 2] };
+
+                        for (let j = 0; j < 100; j++) {
+                            let t = j * (1.0 / 100);
+                            let tt = t * t;
+                            let ttt = tt * t;
+                            let CGPoint = {};
+                            CGPoint.x = 0.5 * (2 * p1.x + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * tt + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * ttt);
+                            CGPoint.y = 0.5 * (2 * p1.y + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * tt + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * ttt);
+                            __that.context2d.lineTo(CGPoint.x, this.baseY - CGPoint.y);
+                        }
+                        __that.context2d.lineTo(p2.x, this.baseY - p2.y);
+                    }
+                    __that.context2d.lineTo((waveArr1.length) * waveWidth, this.baseY - waveArr1[waveArr1.length - 1]);
+                    __that.context2d.lineTo(__that.width + waveWidth * 2, this.baseY);
+                    __that.context2d.lineTo(__that.width + waveWidth * 2, __that.height);
+                    __that.context2d.lineTo(-2 * waveWidth, __that.height);
+                    __that.context2d.fill();
+
+
+                    __that.context2d.beginPath();
+                    __that.context2d.fillStyle = color2
+
+                    __that.context2d.moveTo(-waveWidth2 * 2, this.baseY - waveArr1[0]);
+                    for (let i = 1; i < waveArr1.length - 2; i++) {
+                        let p0 = { x: (i - 2) * waveWidth2, y: waveArr1[i - 1] };
+                        let p1 = { x: (i - 1) * waveWidth2, y: waveArr1[i] };
+                        let p2 = { x: (i) * waveWidth2, y: waveArr1[i + 1] };
+                        let p3 = { x: (i + 1) * waveWidth2, y: waveArr1[i + 2] };
+
+                        for (let j = 0; j < 100; j++) {
+                            let t = j * (1.0 / 100);
+                            let tt = t * t;
+                            let ttt = tt * t;
+                            let CGPoint = {};
+                            CGPoint.x = 0.5 * (2 * p1.x + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * tt + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * ttt);
+                            CGPoint.y = 0.5 * (2 * p1.y + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * tt + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * ttt);
+                            __that.context2d.lineTo(CGPoint.x, this.baseY - CGPoint.y);
+                        }
+                        __that.context2d.lineTo(p2.x, this.baseY - p2.y);
+                    }
+                    __that.context2d.lineTo((waveArr1.length) * waveWidth2, this.baseY - waveArr1[waveArr1.length - 1]);
+                    __that.context2d.lineTo(__that.width + waveWidth2 * 2, this.baseY);
+                    __that.context2d.lineTo(__that.width + waveWidth2 * 2, __that.height);
+                    __that.context2d.lineTo(-2 * waveWidth2, __that.height);
+                    __that.context2d.fill();
+                },
             }
 
         },

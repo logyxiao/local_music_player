@@ -1,15 +1,28 @@
 //  常用设置
-const bgColor = '#f2c2bc'
+const bgColor = '#f0a1a8'
+//   粒子颜色
+const particleColor = '#f0c9cf'
+const canvas1Colors = ['rgba(192, 44, 56, 0.2)', 'rgba(192, 44, 56, 1)']
+const canvas2Colors = ['rgba(192, 44, 56, 0.2)', 'rgba(192, 44, 56, 0.1)']
 
 // 播放歌曲
-const mp3Src = './asset/music/2.mp3'
+const mp3Src = './asset/music/4.mp3'
 
 // 歌词
 const lyricColor = '#130909'
 const lyricColorActive = '#fff'
 const lyricColorFontSize = '30px'
 const lyricColorFontSizeActive = '40px'
+const lycFontHeight = 50
 
+
+
+
+// 1. 柱状 2.圆形柱状 3. 波浪 4. 圆形波浪
+const types = ['waveform', 'circlebar', 'lighting', 'circlewave', 'wavy', 'bar'];
+// 默认特效
+const defaultEffect = 1
+const defaultEffect2 = 5
 
 // 常用字体
 const fonts = [
@@ -35,10 +48,8 @@ const bg = $('#bg')
 
 
 body.style.backgroundColor = bgColor
-bg.style.backgroundColor = bgColor
-bg.style.filter = 'blur(0px)'
-
-
+// bg.style.backgroundColor = bgColor
+// bg.style.filter = 'blur(30px)'
 
 
 

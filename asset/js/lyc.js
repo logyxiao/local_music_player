@@ -60,15 +60,11 @@ const lyricStr = `[00:00.00]Letting go
 [03:58.17]That’s when we should let it go
 [04:05.09]That’s when we should let it go
 [04:08.60]That’s when we should let it go
-[04:12.17]That’s when we should let it go`
+[04:12.17]That’s when we should let it go
+`
 
 
 
-
-
-
-
-const lyrTimes = getLyrTimes(lyricStr)
 
 var doms = {
     audio: audio,
@@ -77,7 +73,7 @@ var doms = {
 };
 
 
-
+const lyrTimes = getLyrTimes(lyricStr)
 const lrcArr = generateLrc(lyricStr); // eg: [{times: 2, words: "第一句歌词"}]
 
 //dom 元素
@@ -120,11 +116,15 @@ let nowIndex = 0
 function lycSlide() {
     let index = getFirstGtIndex(lyrTimes, audio.currentTime) - 1
 
-    log(lrcArr[index])
+    if (index == - 2) {
+        return
+    }
+
+
     if (lrcArr[index].words.length > 15) {
-        lycContent.style.top = index * -60 + 80 + 'px';
+        lycContent.style.top = index * -lycFontHeight + 80 + 'px';
     } else {
-        lycContent.style.top = index * -60 + 120 + 'px';
+        lycContent.style.top = index * -lycFontHeight + 120 + 'px';
     }
 
     [...lycContent.children].forEach(item => {
@@ -143,8 +143,9 @@ function lycSlide() {
 // 播放音乐
 function playMusic() {
     audio.play();
-    audio2.play();
     vudio.dance();
+    audio2.play();
+    // audio2.volume = 0
     vudio2.dance();
     isPlay = true
     controller.style.display = 'none'

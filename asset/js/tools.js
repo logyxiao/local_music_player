@@ -25,7 +25,7 @@ function getFirstGtIndex(nums, target) {
       break;
     }
   }
-  if (index === 0 || index === -1) {
+  if (index === 0) {
     return 1
   }
 
@@ -47,7 +47,7 @@ const getLyrTimes = (lyricStr) => {
     const sec = Number(item.slice(4, 6))
     const ms = Number(item.slice(7, 9))
     return min * 60 + sec + ms / 100;
-  })
+  }).concat([9999])
 }
 
 /**
@@ -92,7 +92,7 @@ function generateLrc(lyricStr) {
     frag.appendChild(li);
   }
   doms.ul.appendChild(frag);
-  return lrcArr;
+  return lrcArr.concat([{ times: 9999, words: "END" }])
 }
 
 

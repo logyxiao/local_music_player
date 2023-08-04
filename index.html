@@ -14,7 +14,7 @@
         <img id="bg"/>
         <canvas id="canvas"></canvas>
         <canvas id="canvas2"></canvas>
-        <audio id="audio" src="./asset/music/1.mp3"  preload="auto"></audio>
+        <audio id="audio" src="./asset/music/1.mp3"   volume="0" preload="auto"></audio>
         <input type="file" name="audioFile" id="audioFile" onchange="vudio.readAudioSrc(this,vudio,document.querySelector('#audioLabel'))" accept="audio/*">
     <div class="bubbles" num="18" duration="16">
     </div>
@@ -25,7 +25,9 @@
     </div>
     <div class="music-player-wrapper">
         <div class="music-player">
-                 <audio src="./asset/music/1.mp3" id="audio2"></audio> 
+                 <audio src="./asset/music/1.mp3" id="audio2"
+                  
+                 ></audio> 
             <div class="top-bar">
                 <span class="iconfont icon-24gl-volumeMiddle"></span>
                 <div class="progress-bar sound-progress-bar">
