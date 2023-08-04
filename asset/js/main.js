@@ -248,6 +248,8 @@ element.addEventListener("keydown", function (event) {
 });
 
 const main = () => {
+    changeFont(defaultFontFamily)
+
     vudio.dance();
     vudio2.dance();
     changeType(1);

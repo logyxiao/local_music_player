@@ -94,3 +94,13 @@ function generateLrc(lyricStr) {
   doms.ul.appendChild(frag);
   return lrcArr;
 }
+
+
+
+
+// 切换字体函数
+const changeFont = (fontName = '印品芷兰体') => {
+  document.body.style.fontFamily = fontName
+}
+
+

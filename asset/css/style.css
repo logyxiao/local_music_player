@@ -1,9 +1,56 @@
 @font-face {
-    font-family: Moderat;
-    font-weight: 700;
-    src: url(../font/Moderat-Bold.aef2636.ttf) format('truetype'), url(../font/Moderat-Medium.9a1678a.ttf) format('truetype'),
-        url(../font/Moderat-Regular.a2f5d8f.ttf) format('truetype');
-    text-rendering: optimizeLegibility;
+    font-family: '印品芷兰体';
+    src: url('../../asset/font/印品芷兰体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '古刻宋';
+    src: url('../../asset/font/古刻宋.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '百转千回-方正喵鸣体';
+    src: url('../../asset/font/百转千回-方正喵鸣体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '方正经黑手写简体';
+    src: url('../../asset/font/方正经黑手写简体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '方正瘦金书简体';
+    src: url('../../asset/font/方正瘦金书简体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '方正字迹-吕建德行楷简体';
+    src: url('../../asset/font/方正字迹-吕建德行楷简体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '华康少女体';
+    src: url('../../asset/font/华康少女体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '神雕侠侣-乾坤手书';
+    src: url('../../asset/font/神雕侠侣-乾坤手书.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '时光手札体';
+    src: url('../../asset/font/时光手札体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '手写字-毓秀小楷体';
+    src: url('../../asset/font/手写字-毓秀小楷体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: '水木清华-上首追光手写体';
+    src: url('../../asset/font/水木清华-上首追光手写体.ttf') format('truetype'), url('../../asset/font/596-CAI978.ttf') format('truetype');
 }
 
 .iconfont {
@@ -20,11 +67,7 @@ body {
     padding: 0;
     overflow: hidden;
     background-image: url('./../img/o_1.png');
-    font-family: Moderat;
-    font-weight: 700;
-    src: url(../font/Moderat-Bold.aef2636.ttf) format('truetype'), url(../font/Moderat-Medium.9a1678a.ttf) format('truetype'),
-        url(../font/Moderat-Regular.a2f5d8f.ttf) format('truetype');
-    text-rendering: optimizeLegibility;
+    font-family: '水木清华-上首追光手写体', sans-serif;
 }
 .container {
     position: relative;
