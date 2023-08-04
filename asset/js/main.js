@@ -60,7 +60,7 @@ var vudio = new Vudio(audio, canvas, {
         fadeSide: false,
         shadowBlur: 4,
         shadowColor: 'rgba(244,244,244,.5)',
-        coverImg: './demo_src/o_1.png',
+        coverImg: '../asset/img/o_1.png',
         color: colors[0],
         verticalAlign: 'bottom'
 
@@ -70,7 +70,7 @@ var vudio = new Vudio(audio, canvas, {
         fadeSide: true,
         shadowBlur: 4,
         shadowColor: 'rgba(244,244,244,.5)',
-        coverImg: './demo_src/o_2.png',
+        coverImg: '../asset/img/o_2.png',
         color: colors[0],
         verticalAlign: 'bottom'
     },
@@ -121,7 +121,7 @@ var vudio2 = new Vudio(audio2, canvas2, {
         fadeSide: true,
         shadowBlur: 4,
         shadowColor: 'rgba(244,244,244,.5)',
-        coverImg: './demo_src/o_2.png',
+        coverImg: '../asset/img/o_2.png',
         color: colors[0],
         verticalAlign: 'bottom'
     },
@@ -150,12 +150,16 @@ var vudio2 = new Vudio(audio2, canvas2, {
 });
 
 
+audio.src = mp3Src;
+audio2.src = mp3Src;
+
+
 function changeType(index) {
     if ([1, 3].includes(index)) {
         canvas.style.position = "absolute";
-        canvas.style.top = "50%";
-        canvas.style.left = "50%";
-        canvas.style.marginLeft = "100px";
+        canvas.style.top = "40%";
+        canvas.style.left = "0%";
+        // canvas.style.marginLeft = "100px";
         canvas.style.marginTop = "-300px";
         canvas.style.width = "600px";
         canvas.style.height = "600px";
@@ -227,7 +231,7 @@ var element = document;
 element.addEventListener("keydown", function (event) {
     // 获取按下的键的键码
     var keyCode = event.keyCode || event.which;
-
+    log(keyCode)
     // 判断是否按下的是空格键
     if (keyCode === 32) {
         if (!isPlay) {
@@ -235,13 +239,18 @@ element.addEventListener("keydown", function (event) {
         } else {
             stopMusic()
         }
-
+    } else if (keyCode === 37) {
+        audio.currentTime -= 5
+    } else if (keyCode === 39) {
+        audio.currentTime += 5
     }
+
 });
 
 const main = () => {
     vudio.dance();
     vudio2.dance();
+    changeType(1);
 }
 
 main()

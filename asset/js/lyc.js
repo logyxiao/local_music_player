@@ -1,6 +1,6 @@
 const lyricStr = `[00:00.00]Letting go
-[00:00.00]原唱 : 蔡健雅
-[00:00.63]制作人 : 汪苏泷/金若晨
+[00:01.00]原唱 : 蔡健雅
+[00:02.63]制作人 : 汪苏泷/金若晨
 [00:03.79]Letting go
 [00:06.28]我终于舍得为你放开手
 [00:10.48]因为爱你爱到我心痛
@@ -63,6 +63,23 @@ const lyricStr = `[00:00.00]Letting go
 [04:12.17]That’s when we should let it go`
 
 
+
+
+
+
+
+const lyrTimes = getLyrTimes(lyricStr)
+
+var doms = {
+    audio: audio,
+    ul: document.getElementById('lyc-content'),
+    container: document.querySelector(".lyric-wrapper"),
+};
+
+
+
+const lrcArr = generateLrc(lyricStr); // eg: [{times: 2, words: "第一句歌词"}]
+
 //dom 元素
 const playBtn = document.querySelector('.icon-bofang')
 const zanTingBtn = document.querySelector('.icon-zanting1')
@@ -91,90 +108,34 @@ let showLycFlag = true
 
 //变量 
 let duration, nowPlayIndex = 0
-const musicList = [{
-    musicSrc: './asset/music/music-1.mp3',
-    musicPic: './asset/music/music-1.jpg',
-    musician: '汪苏泷/金若晨',
-    musicName: 'Letting go'
-},
-{
-    musicSrc: './asset/music/music-2.mp3',
-    musicPic: './asset/music/music-2.jpg',
-    musician: 'The Chainsmokers/Halsey/R3HAB',
-    musicName: 'Closer',
-},
-{
-    musicSrc: './asset/music/music-3.mp3',
-    musicPic: './asset/music/music-3.jpg',
-    musician: 'ILLENIUM,Nevve',
-    musicName: 'Fractures',
-},
-{
-    musicSrc: './asset/music/music-4.mp3',
-    musicPic: './asset/music/music-4.jpg',
-    musician: 'Daniel Powter',
-    musicName: 'Free Loop'
-}
-]
 
-// 获取歌词
-let timeArr = []
-let lrcArr = []
-let insertLrcStr = ''
-const str = lyricStr.split('\n')
-str.forEach(item => {
-    const splitLyc = item.split(']')
-    timeArr.push(timeFormat(splitLyc[0].substr(1, splitLyc[0].length - 4)))
-    lrcArr.push(splitLyc[1])
-    insertLrcStr += `<li>${lrcArr[lrcArr.length - 1]}</li>`
-})
-lycContent.innerHTML = insertLrcStr
 
 // 添加滚动事件
 audio.addEventListener('timeupdate', function () {
     lycSlide()
 })
 
+let nowIndex = 0
 // 歌词正常滚动
 function lycSlide() {
-    let index = binarySearch(timeArr, Math.floor(audio.currentTime))
-    lycContent.style.top = index * -30 + 40 + 'px';
+    let index = getFirstGtIndex(lyrTimes, audio.currentTime) - 1
+
+    log(lrcArr[index])
+    if (lrcArr[index].words.length > 15) {
+        lycContent.style.top = index * -60 + 80 + 'px';
+    } else {
+        lycContent.style.top = index * -60 + 120 + 'px';
+    }
+
     [...lycContent.children].forEach(item => {
         item.className = ''
+        item.style.color = lyricColor
+        item.style.fontSize = lyricColorFontSize
     })
     lycContent.children[index].className = 'active'
-}
-// 格式化时间
-function timeFormat(timeStr) {
-    if (timeStr) {
-        const timeStrArr = timeStr.split(':')
-        const minute = timeStrArr[0][0] == '0' ? timeStrArr[0][1] : timeStrArr[0]
-        const second = timeStrArr[1][0] == '0' ? timeStrArr[1][1] : timeStrArr[1]
-        return parseInt(minute) * 60 + parseInt(second)
-    }
-}
-
-// 二分查找
-function binarySearch(arr, target, left = 0, right = arr.length - 1) {
-    if (left > right) return left - 1
-    const mid = Math.floor((left + right) / 2)
-    if (arr[mid] === target) return mid
-    if (arr[mid] > target) {
-        return binarySearch(arr, target, left, mid - 1)
-    } else {
-        return binarySearch(arr, target, mid + 1, right)
-    }
-}
-
-// 处理时间显示进度条
-function timeAndProgress() {
-    playerProgress.style.width = audio.currentTime / audio.duration * 100 + '%'
-    let time = audio.duration - audio.currentTime
-    let minue = parseInt(time / 60)
-    let second = parseInt(time % 60)
-    let str = `${minue < 10 ? '0' + minue : minue}:${second < 10 ? '0' + second : second}`
-    timeStr.innerHTML = str
-    lycSlide()
+    const activeClass = $('.active')
+    activeClass.style.color = lyricColorActive
+    activeClass.style.fontSize = lyricColorFontSizeActive
 }
 
 
@@ -207,28 +168,19 @@ lycShow.addEventListener('click', function () {
         lyricMask.style.display = 'block'
         infoLeft.style.width = '100%'
         showLycFlag = true
+
+
     } else {
         musicInfo.style.display = 'flex'
         lyricMask.style.display = 'none'
         infoLeft.style.width = '40%'
         showLycFlag = false
+
     }
 })
-// 加载完MP3需要设置时间显示与进度条监听
-audio.addEventListener("canplay", function () {
-    duration = audio.duration
-    setInterval(function () {
-        timeAndProgress()
-    }, 1000)
-})
 
 
 
-// 点击进度条更改播放进度
-playerProgressBar.addEventListener("click", function (e) {
-    audio.currentTime = e.offsetX / this.offsetWidth * duration
-    timeAndProgress()
-})
 
 // 点击声音条更改声音大小
 soundDuration.addEventListener('click', function (e) {
