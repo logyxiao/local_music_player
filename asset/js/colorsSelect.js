@@ -17,29 +17,63 @@ function renderButtons(colors) {
 
     var container = document.getElementById("colors-select");
 
-    for (var i = 0; i < colors.length; i++) {
+    for (var i = 0; i < config.length; i++) {
         var button = document.createElement("button");
         button.className = "color " + `color-${i + 1}`
-        button.style.backgroundImage = getLinearGradient(colors[i])
         button.addEventListener("click", changeColor.bind(null, i));
+        button.innerHTML = config[i].name;
         container.appendChild(button);
     }
 }
 
 function changeColor(index) {
-    vudio.setOption({
-        waveform: {
-            color: colors[index]
+    Theme = config[index].theme;
+    let { bgColor, particleColor,
+        canvas1Colors, canvas2Colors,
+        mp3Src,
+        defaultEffect, defaultEffect2,
+        defaultFontFamily,
+        canvas1Style, canvas2Style,
+    } = Theme
+    body.style.backgroundColor = bgColor
+    lyricColor = Theme.lyricColor
+    lyricColorActive = Theme.lyricColorActive
+    lyricColorFontSize = Theme.lyricColorFontSize
+    lyricColorFontSizeActive = Theme.lyricColorFontSizeActive
+    lycFontHeight = Theme.lycFontHeight
+
+    vudio1.setOption({
+        effect: defaultEffect,
+        circlebar: {
+            color: canvas1Colors,
+            particleColor: particleColor,
+
         },
         circlewave: {
-            color: colors[index]
+
+            color: canvas1Colors,
+            particleColor: particleColor,
+
         },
-        circlebar: {
-            color: colors[index]
-        },
-        lighting: {
-            color: colors[index]
-        }
     });
+
+    vudio2.setOption({
+        effect: defaultEffect2,
+        wavy: {
+
+            color: canvas2Colors,
+        },
+        bar: {
+
+            color: canvas2Colors,
+        },
+    });
+    canvas.style = canvas1Style
+    canvas2.style = canvas2Style
+
+    changeFont(defaultFontFamily)
+
+    audio.src = mp3Src;
+    audio2.src = mp3Src;
 }
 renderButtons(canvas1Colors);

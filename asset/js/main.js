@@ -51,7 +51,6 @@ var vudio = new Vudio(audio, canvas, {
         fadeSide: true,
         color: canvas2Colors,
         verticalAlign: 'bottom'
-
     },
     wavy: {
         maxHeight: 160,
@@ -151,23 +150,12 @@ audio2.src = mp3Src;
 
 
 function changeType(index) {
-    if ([1, 3].includes(index)) {
-        canvas.style.position = "absolute";
-        canvas.style.top = "40%";
-        canvas.style.left = "0%";
-        // canvas.style.marginLeft = "100px";
-        canvas.style.marginTop = "-300px";
-        canvas.style.width = "600px";
-        canvas.style.height = "600px";
-
-    } else {
-        canvas.style.top = '45%';
-        canvas.style.left = '5%';
-        canvas.style.width = '90%';
-        canvas.style.height = '600px';
-        canvas.style.marginLeft = "0";
-        canvas.style.marginTop = "0";
+    canvas.style = canvas1Style
+    canvas2.style = canvas2Style
+    for (let prop in canvas2Style) {
+        canvas2.style[prop] = canvas2Style[prop];
     }
+
     vudio.setOption({
         effect: types[index]
     });
@@ -221,10 +209,9 @@ const stopMusic = () => {
 
 
 
-var element = document;
 
 // 添加键盘事件监听器
-element.addEventListener("keydown", function (event) {
+document.addEventListener("keydown", function (event) {
     // 获取按下的键的键码
     var keyCode = event.keyCode || event.which;
     if (keyCode === 32) {
@@ -243,7 +230,6 @@ element.addEventListener("keydown", function (event) {
 
 const main = () => {
     changeFont(defaultFontFamily)
-
     vudio.dance();
     vudio2.dance();
     changeType(defaultEffect);

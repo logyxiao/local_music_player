@@ -1,11 +1,11 @@
 .music-player-wrapper {
     position: absolute;
-    left: 70%;
+    left: 72%;
     top: 40%;
     transform: translate(-50%, -50%);
 }
 .music-player-wrapper .music-player {
-    width: 500px;
+    width: 621px;
     border-radius: 30px;
     /* background-color: rgba(0, 0, 0, 0.01); */
     backdrop-filter: blur(16px);
@@ -72,7 +72,7 @@
     width: 100%;
     margin-right: 30px;
     position: relative;
-    height: 500px;
+    height: 580px;
 }
 .music-player-wrapper .music-player .music-info .info-left .lyric-mask {
     width: 100%;

@@ -82,6 +82,7 @@ body {
     filter: blur(15px);
 }
 #canvas {
+    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -93,7 +94,7 @@ body {
 }
 #canvas2 {
     position: absolute;
-    top: 41%;
+    top: 48%;
     left: 5%;
     width: 90%;
     height: 600px;

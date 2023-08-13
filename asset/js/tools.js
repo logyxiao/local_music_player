@@ -38,15 +38,15 @@ function getFirstGtIndex(nums, target) {
  * @returns {number[]} 时间标签数组,单位为秒
 */
 const getLyrTimes = (lyricStr) => {
-  const reg = /\[(\d{2}:\d{2}.\d{2})]/g
+  const reg = /\[(\d{2}:\d{2}.\d{3})]/g
   const times = lyricStr.match(reg)
 
   return times.map(item => {
     // 解析时间标签,转换为秒
     const min = Number(item.slice(1, 3))
     const sec = Number(item.slice(4, 6))
-    const ms = Number(item.slice(7, 9))
-    return min * 60 + sec + ms / 100;
+    const ms = Number(item.slice(7, 10))
+    return min * 60 + sec + ms / 1000;
   }).concat([9999])
 }
 
@@ -59,7 +59,7 @@ const getLyrTime = (time) => {
   const min = Number(time.slice(1, 3))
   const sec = Number(time.slice(4, 6))
   const ms = Number(time.slice(7, 9))
-  return min * 60 + sec + ms / 100;
+  return min * 60 + sec + ms / 1000;
 }
 
 /**
@@ -68,7 +68,7 @@ const getLyrTime = (time) => {
  * @returns {Object[]} 解析后的歌词数组
 */
 const parseLrc = (lyricStr) => {
-  const reg = /\[\d{2}:\d{2}.\d{2}\]/g
+  const reg = /\[\d{2}:\d{2}.\d{3}\]/g
   const times = lyricStr.match(reg)
   const lrcArr = lyricStr.split(reg)
   lrcArr.shift()
